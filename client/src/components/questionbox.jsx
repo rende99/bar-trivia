@@ -7,11 +7,25 @@ class JoinPub extends Component {
         super(props)
 		this.state ={
             data: null,
+            Q: "",
+            A: "",
         }
     }
     
     async componentDidMount() {
        console.log(this.props.indx)
+    }
+    QChange(event){
+        console.log("Q changing")
+        this.setState( {Q: event.target.value}, () => {
+            this.props.onQChange(this.state.Q, this.props.round, this.props.question)
+        } )
+    }
+    AChange(event){
+        console.log("A changing")
+        this.setState( {A: event.target.value}, () => {
+            this.props.onAChange(this.state.A, this.props.round, this.props.question)
+        } )
     }
 
     render(){
@@ -26,8 +40,8 @@ class JoinPub extends Component {
                 }
                 <FormGroup>
                     <label>Round {this.props.round} Question {this.props.question}</label>
-                    <FormInput placeholder="Q:" inputRef={ref => { this.QInput = ref; }}/>
-                    <FormInput placeholder="A:" inputRef={ref => { this.AInput = ref; }}/>
+                    <FormInput placeholder="Q:" onChange={this.QChange.bind(this)}/>
+                    <FormInput placeholder="A:" onChange={this.AChange.bind(this)}/>
                 </FormGroup>
             </div> 
         );
