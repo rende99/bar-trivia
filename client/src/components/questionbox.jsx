@@ -40,8 +40,8 @@ class JoinPub extends Component {
                 }
                 <FormGroup>
                     <label>Round {this.props.round} Question {this.props.question}</label>
-                    <FormInput placeholder="Q:" onChange={this.QChange.bind(this)}/>
-                    <FormInput placeholder="A:" onChange={this.AChange.bind(this)}/>
+                    <FormInput placeholder="Q:" defaultValue={this.props.defaultQ} onChange={this.QChange.bind(this)}/>
+                    <FormInput placeholder="A:" defaultValue={this.props.defaultA} onChange={this.AChange.bind(this)}/>
                 </FormGroup>
             </div> 
         );
