@@ -4,6 +4,7 @@ import './App.css';
 import Home from './Home';
 import HostPub from './HostPub';
 import JoinPub from './JoinPub';
+import Game from './Game';
 
 class App extends Component {
 	constructor(props) {
@@ -19,6 +20,7 @@ class App extends Component {
         <Route exact path="/" component={Home}/>
         <Route exact path="/hostPub" component={HostPub}/>
         <Route exact path="/joinPub" component={JoinPub}/>
+        <Route exact path="/play" component={Game}/>
 
       </div>
     );

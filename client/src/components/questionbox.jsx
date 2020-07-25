@@ -1,6 +1,8 @@
 import React, {Component, useEffect, useState} from 'react';
-import { Form, FormGroup, FormInput, Button } from "shards-react";
+import { Form, FormGroup, FormInput, Button, InputGroup, InputGroupAddon, InputGroupText, Card  } from "shards-react";
 import socketIOClient from "socket.io-client";
+import './questionbox.css'
+
 const ENDPOINT = "http://127.0.0.1:3001";
 class JoinPub extends Component {
     constructor(props) {
@@ -39,9 +41,22 @@ class JoinPub extends Component {
                     }}/>
                 }
                 <FormGroup>
-                    <label>Round {this.props.round} Question {this.props.question}</label>
-                    <FormInput placeholder="Q:" defaultValue={this.props.defaultQ} onChange={this.QChange.bind(this)}/>
-                    <FormInput placeholder="A:" defaultValue={this.props.defaultA} onChange={this.AChange.bind(this)}/>
+                    <h5>Round {this.props.round} Question {this.props.question}</h5>
+                    <div className="formDiv">
+                        <InputGroup className="inputGroup">
+                            <InputGroupAddon type="prepend">
+                                <InputGroupText>Q: </InputGroupText>
+                            </InputGroupAddon>
+                            <FormInput defaultValue={this.props.defaultQ} onChange={this.QChange.bind(this)}/>
+                        </InputGroup>
+                        <InputGroup className="inputGroup">
+                            <InputGroupAddon type="prepend">
+                                <InputGroupText>A: </InputGroupText>
+                            </InputGroupAddon>
+                            <FormInput defaultValue={this.props.defaultA} onChange={this.AChange.bind(this)}/>
+                        </InputGroup>
+                    </div>
+
                 </FormGroup>
             </div> 
         );

@@ -8,14 +8,25 @@ class JoinPub extends Component {
         super(props)
 		this.state ={
             data: null,
+            code: 0,
+            name: ""
         }
     }
     
     async componentDidMount() {
-        const socket = socketIOClient(ENDPOINT);
-        socket.on("connection", data => {
-          console.log(data)
-        });
+
+    }
+
+    codeChanged(event){
+        this.setState( {code: event.target.value} )
+    }
+    nameChanged(event){
+        this.setState( {name: event.target.value} )
+
+    }
+
+    submitClick(){
+
     }
 
     render(){
@@ -24,9 +35,24 @@ class JoinPub extends Component {
                 <h1>Join Pub</h1>
                 <Form>
                     <FormGroup>
-                        <label>Enter Pub Code</label>
-                        <FormInput placeholder="ex: 215688" />
-                        <Button theme="light">Search</Button>
+                        <div className="inputGroup">
+                            <h5>Enter Pub Code</h5>
+                            <FormInput placeholder="ex: 215688" onChange={this.codeChanged.bind(this)}/>
+                        </div>
+                        <div className="inputGroup">
+                            <h5>Enter Nickname</h5>
+                            <FormInput placeholder="John" onChange={this.nameChanged.bind(this)}/>
+                        </div>
+
+                        <Link to={{
+                        pathname: '/play',
+                        data: {
+                            isHost: false,
+                            code: this.state.code,
+                            name: this.state.name
+                        }}}>
+                            <Button theme="light">Search</Button>
+                        </Link>
                     </FormGroup>
                 </Form>
 

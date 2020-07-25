@@ -1,0 +1,49 @@
+.inputGroup {
+    margin: 10px 20px 50px 20px;
+}
+
+.templateCard {
+    margin: 10px;
+    padding: 0px;
+}
+.templateCard:hover {
+    cursor: pointer;
+}
+
+.cardBodyParent {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: stretch;
+    align-items: center;
+}
+
+.colL {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    align-items: left;
+}
+
+.colR {
+
+}
+
+.cardP {
+    margin: 0px;
+    padding: 0px;
+}
+
+.timesUsedClass {
+    padding: 0px;
+    margin: 0px;
+}
+
+.buttonDiv {
+    margin: 15px;
+}
+
+.uploadButton {
+}
+

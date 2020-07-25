@@ -1,8 +1,8 @@
 import React, {Component, useEffect, useState} from 'react';
-import { Form, FormGroup, FormInput, FormSelect, Button, ButtonGroup } from "shards-react";
+import { Form, FormGroup, FormInput, FormSelect, Button, ButtonGroup, Modal, ModalHeader, ModalBody, Card, CardBody, CardTitle, CardSubtitle, Container, Row, Col} from "shards-react";
 import { Link, Redirect} from "react-router-dom";
 import QuestionBox from './components/questionbox'
-
+import './HostPub.css'
 
 
 class HostPub extends Component {
@@ -15,6 +15,8 @@ class HostPub extends Component {
             rows: [],
             Qarray: [],
             Aarray: [],
+            modalOpen: false,
+            templatesToDisplay: []
         }
     }
     
@@ -22,6 +24,7 @@ class HostPub extends Component {
         this.setState( {Qarray: Array(this.state.numRounds*this.state.numPerRound)} )
         this.setState( {Aarray: Array(this.state.numRounds*this.state.numPerRound)} )
         this.createQuestionBoxes()
+        this.getAllTemplates()
         console.log(this.state.rows)
 
     }
@@ -160,12 +163,76 @@ class HostPub extends Component {
             this.setState( {Aarray: tempAArray} ) 
             this.createQuestionBoxes()
         };
+    }
 
+    uploadQuestions(event){
+        console.log("uploading...")
+        var fileReader = new FileReader()
+        fileReader.readAsText(event.target.files[0])
+        var jsonObj = {}
+        fileReader.onload = async (e) => {
+            // The file's text will be printed here
+            console.log(e.target.result)
+            jsonObj = JSON.parse(e.target.result)
+            console.log(jsonObj)
+            const response = await fetch('newTemplate/'+JSON.stringify(jsonObj), {
+                method: 'GET'
+            }).then(async response => {
+                // Just close the modal once the file is done uploading to the DB.
+                this.setState( {modalOpen: false} )                
+            })
+
+
+        };
     }
 
     submitClick(){
-        alert("submitted")
         console.log(this.state.Qarray, this.state.Aarray)
+    }
+
+    toggleModal(){
+        this.setState( {modalOpen: !this.state.modalOpen})
+    }
+
+    async getAllTemplates(){
+        // this method is run when the modal is open.
+        console.log("getting ALL templates")
+        const response = await fetch('/getAllTemplates', {
+            method: 'GET'
+        }).then(async response => {
+            console.log(response)
+            const json = await response.json();
+            console.log(json.data)
+            this.setState( {templatesToDisplay: json.data} )
+            return json.data
+        })
+    }
+
+    async templateSelected(event, id){
+        console.log("HERE: ", id)
+        const response = await fetch('getTemplate/'+id, {
+            method: 'GET'
+        }).then(async response => {
+            console.log(response)
+            const json = await response.json();
+            console.log(json.data)
+            
+            this.setState( {numRounds: json.data.numRounds} )
+            this.setState( {numPerRound: json.data.numPerRound} )
+            var tempQArray = []
+            var tempAArray = []
+            for(var i = 0; i < json.data.questions.length; i++){
+                tempQArray[i] = json.data.questions[i].Q
+                tempAArray[i] = json.data.questions[i].A
+            }
+            this.setState( {Qarray: tempQArray} )  
+            this.setState( {Aarray: tempAArray} ) 
+            this.createQuestionBoxes()
+            await fetch('usingTemplate/'+json.data._id, {
+                method: 'GET'
+            })
+            this.toggleModal()
+        })
     }
 
     render(){
@@ -177,37 +244,90 @@ class HostPub extends Component {
                     <Button type="file" name="file" theme="light">Import questions
                         <input type="file" name="file" accept=".json" onChange={this.importQuestions.bind(this)}/>
                     </Button>
-                </ButtonGroup>   
-                <Form>
-                    <label>How many rounds?</label>
-                    <FormSelect onChange={this.numRoundChange.bind(this)} value={this.state.numRounds}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5" selected>5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </FormSelect>
-                    <label>How many questions per round?</label>
-                    <FormSelect onChange={this.numPerRoundChange.bind(this)} value={this.state.numPerRound}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </FormSelect>
-                    {this.state.rows}
-                    <Button theme="dark" onClick={this.submitClick.bind(this)}>Submit and start game</Button>
+                </ButtonGroup>  
+                <div className="buttonDiv">
+                    <Button theme="info" onClick={this.toggleModal.bind(this)}>Browse Pre-made Games</Button> 
+                </div>
+                <Modal open={this.state.modalOpen} toggle={this.toggleModal.bind(this)} size="lg">
+                    <ModalHeader>Public Game Templates</ModalHeader>
+                    {this.state.modalOpen &&
+                        <>
+                            {this.state.templatesToDisplay.sort((a, b) => (a.timesUsed > b.timesUsed) ? -1 : 1).map((obj, index) => {
+                                return (
+                                    <Card className="templateCard" onClick={(event) => this.templateSelected(event, obj._id)}>
+                                        <CardBody>
+                                            <Container>
+                                                <Row>
+                                                    <Col sm="12" md="4" lg="10" className="colL">
+                                                        <CardTitle>{obj.name}</CardTitle>
+                                                        <CardSubtitle>Rounds: {obj.numRounds} | Questions per Round: {obj.numPerRound}</CardSubtitle>
+                                                    </Col>
+                                                    <Col sm="12" md="4" lg="2" className="colR">
+                                                        <p className="cardP">used</p> 
+                                                        <h3 className="timesUsedClass">{obj.timesUsed}</h3>
+                                                        <p className="cardP">times</p>
+                                                    </Col>
+                                                </Row>
+                                            </Container>
+                                        </CardBody>
+                                    </Card>
+                                )
+                            })}
+                        </>
+                    }
+                    <ModalBody>Upload your own game template below!</ModalBody>
+                    <Button className="uploadButton" theme="info">Upload a game template
+                        <input type="file" name="file" accept=".json" onChange={this.uploadQuestions.bind(this)}/>
+                    </Button> 
+                </Modal>
 
+                <Form style={{margin: "30px 0px 0px 0px"}}>
+                    <div className="inputGroup">
+                        <h5>How many rounds?</h5>
+                        <FormSelect onChange={this.numRoundChange.bind(this)} value={this.state.numRounds}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </FormSelect>
+                    </div>
+                    <div className="inputGroup">
+                        <h5>How many questions per round?</h5>
+                        <FormSelect onChange={this.numPerRoundChange.bind(this)} value={this.state.numPerRound}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </FormSelect>
+                    </div>
+ 
+                    {this.state.rows}
+                    
+                    <Link to={{
+                        pathname: '/play',
+                        data: {
+                            isHost: true,
+                            code: Math.floor(Math.random() * 1000000),
+                            name: "Host",
+                            numRounds: this.state.numRounds,
+                            numPerRound: this.state.numPerRound,
+                            Qarray: this.state.Qarray,
+                            Aarray: this.state.Aarray
+                        }}}>
+                        <Button theme="dark" onClick={this.submitClick.bind(this)}>Submit and start game</Button>
+                    </Link>
 
 
                 </Form>
