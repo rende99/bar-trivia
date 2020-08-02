@@ -2,6 +2,8 @@ import React, {Component, useEffect, useState} from 'react';
 import { Form, FormGroup, FormInput, Button } from "shards-react";
 import { Link, Redirect} from "react-router-dom";
 import socketIOClient from "socket.io-client";
+import './joinPub.css'
+
 const ENDPOINT = "http://127.0.0.1:3001";
 class JoinPub extends Component {
     constructor(props) {
@@ -31,17 +33,17 @@ class JoinPub extends Component {
 
     render(){
         return (
-            <div>
+            <div className="God">
                 <h1>Join Pub</h1>
                 <Form>
                     <FormGroup>
-                        <div className="inputGroup">
+                        <div className="joinInputGroup">
                             <h5>Enter Pub Code</h5>
-                            <FormInput placeholder="ex: 215688" onChange={this.codeChanged.bind(this)}/>
+                            <FormInput placeholder="ex: 215688" onChange={this.codeChanged.bind(this)} style={{"max-width": "500px"}}/>
                         </div>
-                        <div className="inputGroup">
+                        <div className="joinInputGroup">
                             <h5>Enter Nickname</h5>
-                            <FormInput placeholder="John" onChange={this.nameChanged.bind(this)}/>
+                            <FormInput placeholder="John" onChange={this.nameChanged.bind(this)} style={{"max-width": "500px"}}/>
                         </div>
 
                         <Link to={{

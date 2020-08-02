@@ -8,15 +8,11 @@ div.God {
     overflow: hidden;
 }
 
-div.choices {
+div.joinInputGroup {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 50px;
+    margin: 60px;
 }
 
-#or {
-    margin: 0px;
-    padding: 20px;
-}

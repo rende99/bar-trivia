@@ -2,21 +2,32 @@
     position: absolute;
     top: 10px;
     left: 10px;
+    margin: 0;
+    padding: 10px;
 }
 
 .codeClass {
     position: absolute;
     top: 10px;
     right: 10px;
+    margin: 0;
+    padding: 10px;
+    border: 2px solid rgba(175,175,175,0.2);
+    border-radius: 4px;
 }
 
 .cardTitle {
-    margin: 0px;
-    padding: 0px;
-
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .playerNameScore {
+    margin: 0;
+    width: 100px;
 }
 
 .cardContent {
@@ -29,8 +40,97 @@
 
 }
 
+.topText {
+    margin: 90px;
+}
 
+.scoreCard {
+    margin: 90px;
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    flex-grow: 1;
+    align-items: stretch;
+    margin: 0px;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    margin: 0px;
+}
+
+.cardTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.playerTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px solid rgba(175,175,175,0.2);
+    margin: 15px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.cardQ {
+    text-align: left;
+    margin: 15px 0px 0px 0px;
+}
+.cardA {
+    text-align: left;
+    margin: 0px 0px 15px 0px;
+}
+
+.innerPlayerDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.responseParent {
+    margin: 14px 40px 14px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+}
 
 .progressBar {
     flex-grow: 1;
+}
+
+.scoreCard {
+    bottom: 0;
+}
+
+.statGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.infoCardTitle {
+    margin-top: 20px;
+}
+
+.gameOverStat {
+    text-align: left;
 }

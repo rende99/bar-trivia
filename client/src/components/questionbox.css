@@ -1,11 +1,42 @@
+.entireParent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin: 20px;
+}
+
 .formDiv {
     display: flex;
     flex-direction: row;
-
+    flex-grow: 1;
 }
 
-.inputGroup {
+.QAGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: 1;
     margin: 10px 20px 50px 20px;
+}
+
+.lineBreak {
+    border: 1.5px solid rgb(200,200,200);
+    margin-bottom: 60px;
+}
+
+@media all and (max-width: 600px){
+
+    .formDiv {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        flex-wrap: 1;
+    }
+
 }
 
 

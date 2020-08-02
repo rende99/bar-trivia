@@ -34,22 +34,18 @@ class JoinPub extends Component {
         return (
             <div>
                 {this.props.question == 1 && this.props.round != 1 &&
-                    <hr style={{
-                        color: '#000000',
-                        backgroundColor: '#000000',
-                        height: 5
-                    }}/>
+                    <hr className="lineBreak" />
                 }
-                <FormGroup>
+                <FormGroup className="entireParent">
                     <h5>Round {this.props.round} Question {this.props.question}</h5>
                     <div className="formDiv">
-                        <InputGroup className="inputGroup">
+                        <InputGroup className="QAGroup">
                             <InputGroupAddon type="prepend">
                                 <InputGroupText>Q: </InputGroupText>
                             </InputGroupAddon>
                             <FormInput defaultValue={this.props.defaultQ} onChange={this.QChange.bind(this)}/>
                         </InputGroup>
-                        <InputGroup className="inputGroup">
+                        <InputGroup className="QAGroup">
                             <InputGroupAddon type="prepend">
                                 <InputGroupText>A: </InputGroupText>
                             </InputGroupAddon>

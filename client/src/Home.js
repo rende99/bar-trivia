@@ -18,17 +18,17 @@ class Home extends Component {
 
     render(){
         return (
-            <div>
-                <h1>Pub Trivia Online</h1>
-                <Link to='/hostPub'>
-                    <Button theme="dark">Host Pub Trivia</Button>
-                </Link>
-                <div>
-                    <p>or</p>
+            <div className="God">
+                <h1 className="siteTitle">Pub Trivia Online</h1>
+                <div className="choices">
+                    <Link to='/hostPub'>
+                        <Button theme="dark">Host Pub Trivia</Button>
+                    </Link>
+                    <h3 id="or"><b>or</b></h3>
+                    <Link to='/joinPub'>
+                        <Button theme="light">Join Pub Trivia</Button>
+                    </Link>
                 </div>
-                <Link to='/joinPub'>
-                    <Button theme="light">Join Pub Trivia</Button>
-                </Link>
             </div>
         );
     }

@@ -101,7 +101,12 @@ io.on("connection", (socket) => {
             },
             state: {
                 currRound: 1,
-                currQuestion: 0
+                currQuestion: 0,
+                objectsThrown: {
+                    tomatoes: 0,
+                    boulders: 0,
+                    cars: 0
+                }
             }
         })
         gameCollection.totalgameCount++
@@ -139,6 +144,28 @@ io.on("connection", (socket) => {
         });
     })
 
+    socket.on('throw', function(data) {
+        console.log("throwing " + data.object)
+        const index = gameCollection.gameList.findIndex(item => item.code == data.code);
+        switch (data.object) {
+            case "tomato":
+                gameCollection.gameList[index].state.objectsThrown.tomatoes++
+                break;
+            case "boulder":
+                gameCollection.gameList[index].state.objectsThrown.boulders++
+                break;
+            case "car":
+                gameCollection.gameList[index].state.objectsThrown.cars++
+                break;
+            default:
+                break;
+        }
+        io.sockets.in(data.code).emit('throwFinished', {
+            thrower: data.name,
+            object: data.object,
+            game: gameCollection.gameList[index]
+        });
+    })
 
     socket.on('submitQuestion', function(data) {
         const index = gameCollection.gameList.findIndex(item => item.code == data.code);
@@ -149,24 +176,25 @@ io.on("connection", (socket) => {
         })
     })
 
+    socket.on('submitScores', function(data) {
+        const index = gameCollection.gameList.findIndex(item => item.code == data.code);
+        gameCollection.gameList[index] = data.game
+        if(gameCollection.gameList[index].state.currRound - 1 == gameCollection.gameList[index].settings.numRounds){
+            gameCollection.gameList[index].state.currQuestion = 0;
+            gameCollection.gameList[index].state.currRound = 0;
+        }
+        io.sockets.in(data.code).emit('scoresSubmitted', {
+            game: gameCollection.gameList[index],
+        });
+    })
 
     socket.on('nextQuestion', function(data) {
         const index = gameCollection.gameList.findIndex(item => item.code == data.code);
         if(gameCollection.gameList[index].state.currQuestion == gameCollection.gameList[index].settings.numPerRound){
             // that was just the last question of the round
-            if(gameCollection.gameList[index].state.currRound == gameCollection.gameList[index].settings.numRounds){
-                // that was just the last question of the last round.
-                // We establish currQuestion = 0 and currRound = 0 to mean the end of the game.
-                gameCollection.gameList[index].state.currQuestion = 0;
-                gameCollection.gameList[index].state.currRound = 0;
-
-            }else{
-                //that was just the last question, but not the last round
-                // We establish currQuestion = 0 and currRound = 0 to mean the beginning of a new round / score review time
-                gameCollection.gameList[index].state.currQuestion = 0;
-                gameCollection.gameList[index].state.currRound++;
-
-            }
+            // We establish currQuestion = 0 and currRound = 0 to mean the beginning of a new round / score review time
+            gameCollection.gameList[index].state.currQuestion = 0;
+            gameCollection.gameList[index].state.currRound++;
         }else{
             gameCollection.gameList[index].state.currQuestion++;
         }
@@ -176,15 +204,8 @@ io.on("connection", (socket) => {
         });
     })
 
-    socket.on('submitScores', function(data) {
-        const index = gameCollection.gameList.findIndex(item => item.code == data.code);
-        gameCollection.gameList[index] = data.game
-
-        io.sockets.in(data.code).emit('scoresSubmitted', {
-            game: gameCollection.gameList[index],
-        });
-    })
-
 });
+
+
 
 

@@ -101,7 +101,15 @@ class HostPub extends Component {
     createQuestionBoxes(){
         var rows = []
         for(var i = 0; i < this.state.numRounds * this.state.numPerRound; i++){
-            rows.push(<QuestionBox round={Math.floor(i / this.state.numPerRound) + 1} question={i % this.state.numPerRound + 1} defaultQ={this.state.Qarray[i]} defaultA={this.state.Aarray[i]} onQChange={this.updateQ.bind(this)} onAChange={this.updateA.bind(this)}/>)
+            rows.push(<QuestionBox 
+                    key={i}
+                    round={Math.floor(i / this.state.numPerRound) + 1} 
+                    question={i % this.state.numPerRound + 1} 
+                    defaultQ={this.state.Qarray[i]} 
+                    defaultA={this.state.Aarray[i]} 
+                    onQChange={this.updateQ.bind(this)} 
+                    onAChange={this.updateA.bind(this)}
+                />)
         }
         this.setState( {rows: rows}, () => {
             return rows
@@ -238,7 +246,7 @@ class HostPub extends Component {
     render(){
         return (
             <div>
-                <h2>Create a new Game</h2>
+                <h2 style={{margin: "50px"}}>Create a new Game</h2>
                 <ButtonGroup>
                     <Button theme="light" onClick={this.exportQuestions.bind(this)}>Export questions</Button>
                     <Button type="file" name="file" theme="light">Import questions
@@ -276,15 +284,18 @@ class HostPub extends Component {
                         </>
                     }
                     <ModalBody>Upload your own game template below!</ModalBody>
-                    <Button className="uploadButton" theme="info">Upload a game template
-                        <input type="file" name="file" accept=".json" onChange={this.uploadQuestions.bind(this)}/>
-                    </Button> 
+                    <div className="uploadButtonWrapper">
+                        <Button className="uploadButton" theme="info">Upload a game template
+                            <input type="file" name="file" accept=".json" onChange={this.uploadQuestions.bind(this)}/>
+                        </Button> 
+                    </div>
+                    
                 </Modal>
 
                 <Form style={{margin: "30px 0px 0px 0px"}}>
                     <div className="inputGroup">
                         <h5>How many rounds?</h5>
-                        <FormSelect onChange={this.numRoundChange.bind(this)} value={this.state.numRounds}>
+                        <FormSelect onChange={this.numRoundChange.bind(this)} value={this.state.numRounds} style={{"maxWidth": "500px"}}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -299,7 +310,7 @@ class HostPub extends Component {
                     </div>
                     <div className="inputGroup">
                         <h5>How many questions per round?</h5>
-                        <FormSelect onChange={this.numPerRoundChange.bind(this)} value={this.state.numPerRound}>
+                        <FormSelect onChange={this.numPerRoundChange.bind(this)} value={this.state.numPerRound} style={{"maxWidth": "500px"}}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -326,7 +337,7 @@ class HostPub extends Component {
                             Qarray: this.state.Qarray,
                             Aarray: this.state.Aarray
                         }}}>
-                        <Button theme="dark" onClick={this.submitClick.bind(this)}>Submit and start game</Button>
+                        <Button className="startGameBtn" theme="dark" onClick={this.submitClick.bind(this)}>Submit and start game</Button>
                     </Link>
 
 
