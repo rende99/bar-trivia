@@ -16,7 +16,7 @@ var gameCollection =  new function() {
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
-app.use('/static', express.static(path.join(__dirname, 'build')));
+express.static(path.join(__dirname, '/build'));
 var server = http.createServer(app);
 var io = socketIO(server);
 io.listen(3001)
