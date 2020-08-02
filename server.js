@@ -16,7 +16,6 @@ var gameCollection =  new function() {
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
-express.static(path.join(__dirname, '/build'));
 var server = http.createServer(app);
 var io = socketIO(server);
 io.listen(3001)
@@ -27,9 +26,7 @@ console.log("STARTING SERVER...")
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
 if (process.env.NODE_ENV === "production") {
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname,  "build", "index.html"));
-    });
+    app.use(express.static(path.join(__dirname, 'build')))
 }
 
 
