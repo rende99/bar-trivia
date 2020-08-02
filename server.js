@@ -26,7 +26,7 @@ console.log("STARTING SERVER...")
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, 'build')))
+    app.use(express.static(path.join(__dirname, 'client', 'build')))
 }
 
 

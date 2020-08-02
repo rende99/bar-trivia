@@ -5,8 +5,7 @@ import { FormSelect, Button, FormTextarea, Progress, Card, CardBody, CardTitle, 
 import { Link, Redirect} from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import './Game.css'
-const ENDPOINT = "http://127.0.0.1:3001";
-const socket = socketIOClient(ENDPOINT);
+const socket = socketIOClient.connect(window.location.hostname)
 
 class Game extends Component {
     constructor(props) {
