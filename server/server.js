@@ -3,6 +3,7 @@ var path = require('path');
 const bodyParser = require('body-parser');
 var http = require('http');
 var socketIO = require('socket.io');
+require('dotenv').config()
 const { v4: uuidv4 } = require('uuid');
 const MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
