@@ -76,8 +76,8 @@ class Game extends Component {
                     case "boulder":
                         toast.dark(`${response.thrower} threw a boulder at you!`)
                         break;
-                    case "car":
-                        toast.warning(`${response.thrower} threw a car at you!`)
+                    case "egg":
+                        toast.warning(`${response.thrower} threw an egg at you!`)
                         break;
                     default:
                         toast(`${response.thrower} threw something at you!`)
@@ -148,14 +148,19 @@ class Game extends Component {
                                 <h4>Game Settings:</h4>
                                 <h6>Rounds: {this.state.game.settings.numRounds} | Questions Per Round: {this.state.game.settings.numPerRound}</h6>
                                 <h4>Players in lobby:</h4>
-                                {this.state.game != null && this.state.game.connectedPlayers.map((item, index) => (
+                                {this.state.game.connectedPlayers.map((item, index) => (
                                     <div>
                                         <p>{item.name}</p>
                                     </div>
                                 ))}
                                 {this.state.isHost &&
                                     <>
-                                        <Button theme="dark" onClick={this.beginGame.bind(this)}>Begin Game with these players</Button>
+                                        <Button 
+                                            theme="dark" 
+                                            onClick={this.beginGame.bind(this)}
+                                            disabled={this.state.game.connectedPlayers.length <= 1}>
+                                        Begin Game with these players
+                                        </Button>
                                     </>
 
                                 }
@@ -166,7 +171,7 @@ class Game extends Component {
                                 <h1 className="topText">Round {this.state.game.state.currRound} Question {this.state.game.state.currQuestion}:</h1>
                                 <h4>{this.state.game.settings.Qarray[(this.state.game.state.currRound-1) * this.state.game.settings.numPerRound + this.state.game.state.currQuestion - 1]}</h4>
                                 {this.state.isHost &&
-                                    <Button theme="dark" onClick={this.nextQuestion.bind(this)}>Next</Button>
+                                    <Button style={{margin: "20px"}} theme="dark" onClick={this.nextQuestion.bind(this)}>Next</Button>
                                 }
                                 {!this.state.isHost &&
                                     <div style={{margin: "0px 40px 0px 40px"}}>
@@ -232,8 +237,8 @@ class Game extends Component {
                                     <>
                                         <h3>Your answers are being scored... Hang on!</h3>
                                         <Button theme="danger" onClick={ () => {this.beginThrow("tomato")}} style={{margin: "30px"}} >Throw a tomato</Button>
+                                        <Button theme="warning" onClick={ () => {this.beginThrow("egg")}} style={{margin: "30px"}} >Throw an egg</Button>
                                         <Button theme="secondary" onClick={ () => {this.beginThrow("boulder")}} style={{margin: "30px"}} >Throw a boulder</Button>
-                                        <Button theme="warning" onClick={ () => {this.beginThrow("car")}} style={{margin: "30px"}} >Throw a car</Button>
 
                                     </>
                                 }
@@ -250,7 +255,7 @@ class Game extends Component {
                                         <CardTitle className="statGroup">
                                             <p className="gameOverStat">Tomatoes thrown: <b>{this.state.game.state.objectsThrown.tomatoes}</b></p>
                                             <p className="gameOverStat">Boulders thrown: <b>{this.state.game.state.objectsThrown.boulders}</b></p>
-                                            <p className="gameOverStat">Cars thrown: <b>{this.state.game.state.objectsThrown.cars}</b></p>
+                                            <p className="gameOverStat">Eggs thrown: <b>{this.state.game.state.objectsThrown.eggs}</b></p>
                                         </CardTitle>                                              
                                     </CardBody>
                                 </Card>

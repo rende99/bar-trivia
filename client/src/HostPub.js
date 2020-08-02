@@ -330,7 +330,7 @@ class HostPub extends Component {
                         pathname: '/play',
                         data: {
                             isHost: true,
-                            code: Math.floor(Math.random() * 1000000),
+                            code: String(Math.floor((Math.random() + 1) * 1000000)).substr(1),
                             name: "Host",
                             numRounds: this.state.numRounds,
                             numPerRound: this.state.numPerRound,

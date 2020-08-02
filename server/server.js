@@ -24,7 +24,7 @@ const port = process.env.PORT || 5000;
 console.log("STARTING SERVER...")
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
-MongoClient.connect('mongodb+srv://rende99:SkRxxW8QpLt2rLj@cluster0.2dzln.mongodb.net/bar-trivia-db?retryWrites=true&w=majority', { useUnifiedTopology: true })
+MongoClient.connect(`mongodb+srv://${process.env.mongo_username}:${process.env.mongo_password}@cluster0.2dzln.mongodb.net/bar-trivia-db?retryWrites=true&w=majority`, { useUnifiedTopology: true })
 .then(client => {
     const db = client.db('bar-trivia-db')
     console.log(db)
@@ -105,7 +105,7 @@ io.on("connection", (socket) => {
                 objectsThrown: {
                     tomatoes: 0,
                     boulders: 0,
-                    cars: 0
+                    eggs: 0
                 }
             }
         })
@@ -154,8 +154,8 @@ io.on("connection", (socket) => {
             case "boulder":
                 gameCollection.gameList[index].state.objectsThrown.boulders++
                 break;
-            case "car":
-                gameCollection.gameList[index].state.objectsThrown.cars++
+            case "egg":
+                gameCollection.gameList[index].state.objectsThrown.eggs++
                 break;
             default:
                 break;
