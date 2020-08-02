@@ -27,13 +27,10 @@ server.listen(port, () => console.log(`Listening on port ${port}`));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'build')))
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    });
 }
 
 
-MongoClient.connect(`mongodb+srv://${process.env.mongo_username}:${process.env.mongo_password}@cluster0.2dzln.mongodb.net/bar-trivia-db?retryWrites=true&w=majority`, { useUnifiedTopology: true })
+MongoClient.connect(process.env.mongo_url, { useUnifiedTopology: true })
 .then(client => {
     const db = client.db('bar-trivia-db')
     console.log(db)
