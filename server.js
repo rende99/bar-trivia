@@ -25,6 +25,11 @@ const port = process.env.PORT || 5000;
 console.log("STARTING SERVER...")
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
 MongoClient.connect(`mongodb+srv://${process.env.mongo_username}:${process.env.mongo_password}@cluster0.2dzln.mongodb.net/bar-trivia-db?retryWrites=true&w=majority`, { useUnifiedTopology: true })
 .then(client => {
     const db = client.db('bar-trivia-db')
